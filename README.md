@@ -131,6 +131,58 @@ Kernel ---> Linux Kernel Tools ---> Tích chọn [*] perf
 <img width="2560" height="1920" alt="image" src="https://github.com/user-attachments/assets/5de14892-c761-4ddd-82d4-4376ecb1943e" />
 
 
+## Bài 2.3: Phân tích về Bộ nhớ
+- Vì trong code đã có hàm leak_memory() đã được gọi, chúng ta có thể test luôn.
+- Trên BBB (cửa sổ screen), gõ lệnh:
+```bash
+valgrind --leak-check=full ./bai_tap sex hien ra laf:
+```
+```bash
+# valgrind --leak-check=full ./bai_tap
+==1062== Memcheck, a memory error detector
+==1062== Copyright (C) 2002-2024, and GNU GPL'd, by Julian Seward et al.
+==1062== Using Valgrind-3.26.0 and LibVEX; rerun with -h for copyright info
+==1062== Command: ./bai_tap
+==1062==
+Bat dau chuong trinh Debugging...
+Dang cap phat bo nho nhung khong free...
+Vong lap thu 0
+Vong lap thu 1
+Vong lap thu 2
+Ket thuc chuong trinh.
+==1062==
+==1062== HEAP SUMMARY:
+==1062== 	in use at exit: 400 bytes in 1 blocks
+==1062==   total heap usage: 2 allocs, 1 frees, 4,496 bytes allocated
+==1062==
+==1062== 400 bytes in 1 blocks are definitely lost in loss record 1 of 1
+==1062==	at 0x48352D4: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-arm-linux.so)
+==1062==
+==1062== LEAK SUMMARY:
+==1062==	definitely lost: 400 bytes in 1 blocks
+==1062==	indirectly lost: 0 bytes in 0 blocks
+==1062==  	possibly lost: 0 bytes in 0 blocks
+==1062==	still reachable: 0 bytes in 0 blocks
+==1062==     	suppressed: 0 bytes in 0 blocks
+==1062==
+==1062== For lists of detected and suppressed errors, rerun with: -s
+==1062== ERROR SUMMARY: 1 errors from 1 contexts (suppressed: 0 from 0)
+```
+
+—> 400 bytes in 1 blocks are definitely lost: Valgrind tính toán cực kỳ chính xác. Trong code bạn viết malloc(100 * sizeof(int)). Một biến kiểu int chiếm 4 bytes, nhân với 100 phần tử là tròn trĩnh 400 bytes bị bỏ quên do không có hàm free().
+- `"at 0x48352D4: malloc..."`: Nó chỉ ra chính xác hàm gây rò rỉ là hàm malloc. (Nếu biên dịch đủ thư viện chuẩn, đôi khi nó còn trỏ thẳng đến tên hàm leak_memory().
+
+- Kết quả:
+
+<img width="2560" height="1920" alt="image" src="https://github.com/user-attachments/assets/5b0d1c5b-c6cf-40c5-bb42-23a1a945cb49" />
+
+
+
+<img width="2560" height="1920" alt="image" src="https://github.com/user-attachments/assets/e8368181-fd9f-46df-a64a-925c65a28c73" />
+
+
+
+
 
 
 

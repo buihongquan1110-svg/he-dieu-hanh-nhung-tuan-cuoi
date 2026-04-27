@@ -63,3 +63,11 @@ int main() {
 [*] valgrind (Dùng cho Bài 2.3)
 Kernel ---> Linux Kernel Tools ---> Tích chọn [*] perf
 ```
+- Kết quả của bài 2.1
+
+<img width="2560" height="1920" alt="image" src="https://github.com/user-attachments/assets/770e6afa-8b69-4456-8d96-37a892444fbd" />
+
+- Minh chứng: GDB trên Host xác nhận đã kết nối thành công và dừng tại điểm bắt đầu (_start) của chương trình.
+
+
+

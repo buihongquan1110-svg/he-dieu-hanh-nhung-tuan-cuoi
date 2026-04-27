@@ -69,5 +69,31 @@ Kernel ---> Linux Kernel Tools ---> Tích chọn [*] perf
 
 - Minh chứng: GDB trên Host xác nhận đã kết nối thành công và dừng tại điểm bắt đầu (_start) của chương trình.
 
+## Bài 2.2: Thực hiện sử dụng gdb để điều khiển luồng cơ bản chương trình từ host -> target
+- Bước 1: Thêm Breakpoint và chạy vào chương trình chính:
 
+Đầu tiên, chúng ta đặt điểm dừng tại hàm main và cho chương trình chạy đến đó: (gdb) break main -> Kết quả: GDB báo đã tạo Breakpoint số 1 tại hàm main.
+(gdb) continue -> Kết quả: Chương trình chạy và dừng lại tại dòng printf("Bat dau chuong trinh Debugging...\n");
+- Bước 2: Dieu khien luong next, step.
+(gdb) next -> Kết quả: Lệnh này (n viết tắt) sẽ thực thi hàm printf và nhảy xuống dòng int fd = open...
+Bạn gõ tiếp next (hoặc chỉ cần nhấn phím Enter để lặp lại lệnh trước đó) khoảng 2-3 lần cho đến khi GDB báo đang đứng ở dòng: leak_memory(); // Cho bài 2.3
+Bây giờ thay vì gõ next, hãy gõ step để chui vào bên trong hàm đó:
+(gdb) step -> Kết quả: Lệnh step (s viết tắt) sẽ đưa bạn chui vào bên trong hàm leak_memory(), đứng tại dòng printf("Dang cap phat bo nho... \n");
+Gõ next vài lần để chạy hết hàm leak_memory() và GDB sẽ tự động nhảy ngược trở lại hàm main.
+
+- Bước 3: In và Gán giá trị biến
+Hãy chạy lệnh next liên tục cho đến khi bạn chui vào bên trong vòng lặp while(counter < 3) và đứng ở dòng printf("Vong lap thu %d\n", counter); (hoặc dòng counter++;).
+Tại đây, biến counter đã được khởi tạo, chúng ta bắt đầu test:
+In giá trị hiện tại:
+(gdb) print counter -> Kết quả: GDB in ra $1 = 0 (vì vòng lặp mới chạy lần đầu).
+Gán giá trị mới: Giả sử bạn muốn can thiệp, không cho nó chạy 3 vòng nữa mà bắt nó nhảy lên vòng cuối luôn: (gdb) set var counter = 2 , in laij dder ktra: (gdb) print counter -> Kết quả: GDB in ra $2 = 2. Bạn đã can thiệp thành công vào RAM của BeagleBone từ xa!
+- Bước 4: Xem giá trị thanh ghi
+Bạn có thể xem trạng thái CPU của BeagleBone Black ngay lúc này:
+(gdb) info registers -> Kết quả: Một loạt các thanh ghi (r0, r1, r2, sp, lr, pc...) của chip ARM sẽ được in ra.
+- Bước 5: Xem và Xóa Breakpoint
+Kiểm tra lại xem mình đang có bao nhiêu điểm dừng:
+(gdb) info breakpoints -> Kết quả: Liệt kê danh sách các breakpoint, bạn sẽ thấy cái số 1 ở hàm main.
+Xoa breakpoint ddi: (gdb) delete 1
+Bây giờ vì không còn breakpoint nào, và biến counter cũng đã bị bạn ép thành 2 (vòng lặp cuối), hãy gõ lệnh chạy nốt: (gdb) continue
+Kết quả: Chương trình sẽ in ra nốt câu "Ket thuc chuong trinh." và thoát. GDB sẽ báo [Inferior 1 (process ...) exited normally].
 

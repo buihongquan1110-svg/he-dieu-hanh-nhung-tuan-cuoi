@@ -264,7 +264,7 @@ Sync
 
 
 
-# P/S: Bài 2.4 sẽ làm cuối cùng vì là theo code này để chạy các bài trc thì cần bỏ dòng cause_crash, còn bài 2.4 cần dòng này.
+### P/S: Bài 2.4 sẽ làm cuối cùng vì là theo code này để chạy các bài trc thì cần bỏ dòng cause_crash, còn bài 2.4 cần dòng này.
 
 
 

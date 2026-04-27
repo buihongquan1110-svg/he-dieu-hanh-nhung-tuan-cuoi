@@ -1,6 +1,6 @@
 # Bài tập tuần cuối:  Sử dụng các công cụ gỡ lỗi và đánh giá hiệu năng cơ bản.
 
-- File code để chạy các lệnh debug.
+- File code để chạy các lệnh debug:
 ```bash
 #include <stdio.h>
 #include <stdlib.h>
@@ -47,3 +47,19 @@ int main() {
 
 ## Bài 2.1: Cài đặt thành công gdbserver trên Target.
 
+- Bài 2.1 và 2.2 có địa chỉ ip ảo luôn là 192.168.7.2
+
+
+- Tạo file main.c, rồi biên dịch: ../output/host/bin/arm-linux-gcc -g bai_tap.c -o bai_tap
+-  kéo lên xuống tìm và tích đủ các mục này:
+```bash
+[*] gdb
+```
+- Khi bạn tích vào gdb, ngay bên dưới nó sẽ hiện ra các menu con. Hãy tích vào [*] gdbserver (để làm Bài 2.1 và 2.2).
+(Mẹo nhỏ: Tích luôn vào [*] full debugger để cài luôn bản GDB đầy đủ lên BBB, phòng trường hợp bạn không kết nối mạng được từ laptop xuống BBB thì vẫn gỡ lỗi trực tiếp được).
+```bash
+[*] strace (Dùng cho Bài 2.6)
+[*] ltrace (Dùng cho Bài 2.6)
+[*] valgrind (Dùng cho Bài 2.3)
+Kernel ---> Linux Kernel Tools ---> Tích chọn [*] perf
+```

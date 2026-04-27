@@ -181,6 +181,91 @@ Ket thuc chuong trinh.
 <img width="2560" height="1920" alt="image" src="https://github.com/user-attachments/assets/e8368181-fd9f-46df-a64a-925c65a28c73" />
 
 
+## Bài 2.5: Phân tích hiệu năng
+```bash
+# perf record ./bai_tap
+Couldn't synthesize bpf events.
+Bat dau chuong trinh Debugging...
+Dang cap phat bo nho nhung khong free...
+Vong lap thu 0
+Vong lap thu 1
+```
+
+
+```bash
+#
+Ket thuc chuong trinh.[ 1613.562089] perf: interrupt took too long (2860 > 2500), lowering kernel.perf_event_max_sample_rate to 69900
+[ 1613.573209] perf: interrupt took too long (89802 > 3575), lowering kernel.perf_event_max_sample_rate to 2200
+
+[ perf record: Woken up 1 times to write data ]
+[ perf record: Captured and wrote 0.007 MB perf.data (28 samples) ]
+# perf report
+der/--header-only option
+#
+#
+# Total Lost Samples: 0
+#
+# Samples: 28  of event 'cycles'
+# Event count (approx.): 4314261
+#
+# Overhead  Command  Shared Object    	Symbol                        	 
+# ........  .......  ...................  ...................................
+#
+ 	6.37%  bai_tap  ld-linux-armhf.so.3  [.] __GI___tunables_init
+ 	6.35%  bai_tap  [kernel.kallsyms]	[k] __fput
+ 	6.27%  bai_tap  [kernel.kallsyms]	[k] percpu_counter_add_batch
+ 	6.22%  bai_tap  [kernel.kallsyms]	[k] flush_cache_range
+ 	6.15%  bai_tap  [kernel.kallsyms]	[k] __rseq_handle_notify_resume
+ 	6.09%  bai_tap  ld-linux-armhf.so.3  [.] do_lookup_x
+ 	6.04%  bai_tap  ld-linux-armhf.so.3  [.] _dl_lookup_symbol_x
+ 	5.99%  bai_tap  [kernel.kallsyms]	[k] filemap_map_pages
+ 	5.96%  bai_tap  libc.so.6        	[.] __fstat64_time64
+ 	5.94%  bai_tap  [kernel.kallsyms]	[k] _raw_spin_unlock_irqrestore
+ 	5.91%  bai_tap  [kernel.kallsyms]	[k] lock_page_memcg
+ 	5.86%  bai_tap  [kernel.kallsyms]	[k] vfs_write
+
+```
+- Kết quả:
+
+<img width="2560" height="1920" alt="image" src="https://github.com/user-attachments/assets/e023ad10-1d89-430a-a2e4-d7ce98294351" />
+
+## Bài 2.6: Phân tích Tracing
+- Chạy 2 lệnh:
+```bash
+strace -o strace_log.txt ./bai_tap
+cat strace_log.txt
+```
+- Kết quả:
+
+<img width="2560" height="1920" alt="image" src="https://github.com/user-attachments/assets/5de21283-055b-4c73-82c4-1c08c2efca75" />
+
+
+## Bài 2.4: Phân tích Core Dump
+- Với bài này thì phải quay lai phải bai_tap.c và uncomment dòng // cause_crash(); rồi chạy lệnh bien dịch tạo 1 file khac nữa là bai_tap_crash bằng lệnh ../output/host/bin/arm-linux-gcc -g bai_tap.c -o bai_tap_crash.
+- Rồi copy file sang sdcard bằng lệnh:
+```bash
+sudo cp bai_tap_crash /media/nhatthanh/rootfs/root/
+sudo chmod +x /media/nhatthanh/rootfs/root/bai_tap_crash
+Sync
+```
+
+- rồi mở terminal BBB lên rồi chạy lệnh: ulimit -c unlimited đêr cho phép hẹ thong chạy file sinh lỗi core dump. Rồi chạy file crash tạo đc ở trên: ./bai_tap_crash -> Màn hình sẽ in ra: Chuan bi gay loi Core Dump... sau đó văng ra lỗi Segmentation fault (core dumped).
+- Kiểm tra xem file core đã xuất hiện chưa: ls -l core
+- Đây là lệnh cuối cùng của đồ án. Dùng GDB để đọc file core và tìm ra kẻ gây lỗi: gdb ./bai_tap_crash core
+- Khi giao diện (gdb) hiện ra, bạn gõ lệnh truy vết: (gdb) bt
+- Bức ảnh chốt sổ: Lệnh bt (Backtrace) sẽ in ra luồng chạy của chương trình và chỉ đích danh lỗi xảy ra tại dòng *ptr = 42 nằm trong hàm cause_crash()
+
+
+<img width="2560" height="1920" alt="image" src="https://github.com/user-attachments/assets/9b92134a-b86e-40a3-b2e6-f13f92dda60c" />
+
+
+<img width="2560" height="1920" alt="image" src="https://github.com/user-attachments/assets/9883a013-154d-4dae-af66-2719e06165c2" />
+
+
+- P/S: Bài 2.4 sẽ làm cuối cùng vì là theo code này để chạy các bài trc thì cần bỏ dòng cause_crash, còn bài 2.4 cần dòng này.
+
+
+
 
 
 

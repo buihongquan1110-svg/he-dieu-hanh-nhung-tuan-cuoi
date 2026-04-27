@@ -262,7 +262,9 @@ Sync
 <img width="2560" height="1920" alt="image" src="https://github.com/user-attachments/assets/9883a013-154d-4dae-af66-2719e06165c2" />
 
 
-- P/S: Bài 2.4 sẽ làm cuối cùng vì là theo code này để chạy các bài trc thì cần bỏ dòng cause_crash, còn bài 2.4 cần dòng này.
+
+
+# P/S: Bài 2.4 sẽ làm cuối cùng vì là theo code này để chạy các bài trc thì cần bỏ dòng cause_crash, còn bài 2.4 cần dòng này.
 
 
 

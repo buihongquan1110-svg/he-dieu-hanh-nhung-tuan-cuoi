@@ -74,7 +74,7 @@ Kernel ---> Linux Kernel Tools ---> Tích chọn [*] perf
 
 - Đầu tiên, chúng ta đặt điểm dừng tại hàm main và cho chương trình chạy đến đó: (gdb) break main -> Kết quả: GDB báo đã tạo Breakpoint số 1 tại hàm main.
 - (gdb) continue -> Kết quả: Chương trình chạy và dừng lại tại dòng printf("Bat dau chuong trinh Debugging...\n");
-### Bước 2: Dieu khien luong next, step:
+### Bước 2: Điều khiển luồng next, step:
 
 
 - (gdb) next -> Kết quả: Lệnh này (n viết tắt) sẽ thực thi hàm printf và nhảy xuống dòng int fd = open...

@@ -94,7 +94,7 @@ Kernel ---> Linux Kernel Tools ---> Tích chọn [*] perf
 ```bash
 (gdb) print counter -> Kết quả: GDB in ra $1 = 0 (vì vòng lặp mới chạy lần đầu).
 ```
-- Gán giá trị mới: Giả sử muốn can thiệp, không cho nó chạy 3 vòng nữa mà bắt nó nhảy lên vòng cuối luôn: (gdb) set var counter = 2 , in laij dder ktra: (gdb) print counter -> Kết quả: GDB in ra $2 = 2. Bạn đã can thiệp thành công vào RAM của BeagleBone từ xa!
+- Gán giá trị mới: Giả sử muốn can thiệp, không cho nó chạy 3 vòng nữa mà bắt nó nhảy lên vòng cuối luôn: (gdb) set var counter = 2 , in lại để kiểm tra: (gdb) print counter -> Kết quả: GDB in ra $2 = 2. Vậy đã can thiệp thành công vào RAM của BeagleBone từ xa!
 
 
 
@@ -112,7 +112,7 @@ Kernel ---> Linux Kernel Tools ---> Tích chọn [*] perf
 ```bash
 (gdb) info breakpoints -> Kết quả: Liệt kê danh sách các breakpoint, bạn sẽ thấy cái số 1 ở hàm main.
 ```
-- Xoa breakpoint ddi: (gdb) delete 1
+- Xóa breakpoint đi: (gdb) delete 1
 - Bây giờ vì không còn breakpoint nào, và biến counter cũng đã bị bạn ép thành 2 (vòng lặp cuối), hãy gõ lệnh chạy nốt: (gdb) continue
 - Kết quả: Chương trình sẽ in ra nốt câu "Ket thuc chuong trinh." và thoát. GDB sẽ báo [Inferior 1 (process ...) exited normally].
 
@@ -241,7 +241,7 @@ cat strace_log.txt
 
 
 ## Bài 2.4: Phân tích Core Dump
-- Với bài này thì phải quay lai phải bai_tap.c và uncomment dòng // cause_crash(); rồi chạy lệnh bien dịch tạo 1 file khac nữa là bai_tap_crash bằng lệnh ../output/host/bin/arm-linux-gcc -g bai_tap.c -o bai_tap_crash.
+- Với bài này thì phải quay lai phải bai_tap.c và uncomment dòng // cause_crash(); rồi chạy lệnh biên dịch tạo 1 file khac nữa là bai_tap_crash bằng lệnh ../output/host/bin/arm-linux-gcc -g bai_tap.c -o bai_tap_crash.
 - Rồi copy file sang sdcard bằng lệnh:
 ```bash
 sudo cp bai_tap_crash /media/nhatthanh/rootfs/root/
@@ -249,7 +249,7 @@ sudo chmod +x /media/nhatthanh/rootfs/root/bai_tap_crash
 Sync
 ```
 
-- rồi mở terminal BBB lên rồi chạy lệnh: ulimit -c unlimited đêr cho phép hẹ thong chạy file sinh lỗi core dump. Rồi chạy file crash tạo đc ở trên: ./bai_tap_crash -> Màn hình sẽ in ra: Chuan bi gay loi Core Dump... sau đó văng ra lỗi Segmentation fault (core dumped).
+- rồi mở terminal BBB lên rồi chạy lệnh: ulimit -c unlimited để cho phép hệ thống chạy file sinh lỗi core dump. Rồi chạy file crash tạo đc ở trên: ./bai_tap_crash -> Màn hình sẽ in ra: Chuan bi gay loi Core Dump... sau đó văng ra lỗi Segmentation fault (core dumped).
 - Kiểm tra xem file core đã xuất hiện chưa: ls -l core
 - Đây là lệnh cuối cùng của đồ án. Dùng GDB để đọc file core và tìm ra kẻ gây lỗi: gdb ./bai_tap_crash core
 - Khi giao diện (gdb) hiện ra, bạn gõ lệnh truy vết: (gdb) bt
